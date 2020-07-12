@@ -1,0 +1,50 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "react", "react-hooks", "react-native", "prettier", "simple-import-sort"],
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "prettier/react"
+    ],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "react-native/react-native": true
+    },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "detect"
+        }
+    },
+    "rules": {
+        /** Global */
+        "no-shadow": "off",
+        "semi": ["error", "never"],
+        "prettier/prettier": "error",
+        "comma-dangle": ["error", "never"],
+        "max-len": ["error", { "code": 100 }],
+        /** Typescript eslint */
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/ban-ts-ignore": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/interface-name-prefix": "off",
+        "@typescript-eslint/member-delimiter-style": "off",
+        "@typescript-eslint/consistent-type-assertions": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        /** React */
+        "react/prop-types": "off",
+        "react/display-name": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "react-native/no-single-element-style-arrays": "error"
+    }
+}

@@ -1,0 +1,6 @@
+# Build artefacts
+/build/*
+/coverage/*
+
+# Custom Files
+/.eslintrc
