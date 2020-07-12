@@ -1,0 +1,11 @@
+const MOVIES_SAGA = 'MOVIES_SAGA'
+const MOVIES_START = 'MOVIES_START'
+const MOVIES_SUCCESS = 'MOVIES_SUCCESS'
+const MOVIES_FAILURE = 'MOVIES_FAILURE'
+
+export const MovieTypes = {
+  saga: MOVIES_SAGA,
+  start: MOVIES_START,
+  success: MOVIES_SUCCESS,
+  failure: MOVIES_FAILURE
+}
