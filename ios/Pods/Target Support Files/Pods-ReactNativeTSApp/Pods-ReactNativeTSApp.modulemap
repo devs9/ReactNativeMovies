@@ -1,6 +1,0 @@
-module Pods_ReactNativeTSApp {
-  umbrella header "Pods-ReactNativeTSApp-umbrella.h"
-
-  export *
-  module * { export * }
-}
