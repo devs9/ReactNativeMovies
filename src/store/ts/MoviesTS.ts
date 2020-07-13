@@ -11,3 +11,9 @@ export interface MoviesSate {
   isLoading: boolean
   list: Movie[]
 }
+
+export interface MovieDetailState extends MoviesSate {
+  id: string | boolean
+  rating: string
+  overview: string
+}

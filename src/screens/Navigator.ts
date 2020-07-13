@@ -1,7 +1,7 @@
 import {Navigation} from 'react-native-navigation'
 
-export const goToMoviesDetails = (id: number, componentId: string) => () => {
+export const goToMoviesDetails = (componentId: string) => {
   Navigation.push(componentId, {
-    component: {name: 'MoviesDetail', passProps: id}
+    component: {name: 'MoviesDetail'}
   })
 }

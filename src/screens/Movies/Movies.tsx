@@ -5,7 +5,7 @@ import {NavigationComponentProps} from 'react-native-navigation'
 
 import {moviesStyleOpt} from '../config'
 import {goToMoviesDetails} from '../Navigator'
-import {getMovieSaga, AppStore, Movie} from '../../store'
+import {getMovieSaga, setMovieId, AppStore, Movie} from '../../store'
 
 import {AppLayout} from '../../app'
 import {SkeletonCard} from '../../components'
@@ -15,8 +15,13 @@ const Movies: FC<NavigationComponentProps> = (props) => {
   const dispatch = useDispatch()
   const movies = useSelector((state: AppStore) => state.movies)
 
+  const goToMovieDetail = (id: string) => () => {
+    goToMoviesDetails(props.componentId)
+    dispatch(setMovieId(id))
+  }
+
   const renderItem = ({item}: {item: Movie}) => (
-    <SkeletonCard {...item} goToDetails={goToMoviesDetails(item.id, props.componentId)} />
+    <SkeletonCard {...item} goToDetails={goToMovieDetail(String(item.id))} />
   )
 
   useEffect(() => {

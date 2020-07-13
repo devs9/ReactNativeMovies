@@ -1,29 +1,38 @@
 import {Reducer} from 'redux'
 import {MovieTypes} from './actionTypes'
-import {MoviesSate} from '../ts'
+import {MovieDetailState} from '../ts'
 
-const initialState: MoviesSate = {
+const initialState: MovieDetailState = {
   list: [],
   error: '',
+  id: false,
+  rating: '',
+  overview: '',
   isLoaded: false,
   isLoading: false
 }
 
-export const moviesReducer: Reducer<MoviesSate> = (state = initialState, {type, payload}) => {
+export const movieInfoReducer: Reducer<MovieDetailState> = (
+  state = initialState,
+  {type, payload}
+) => {
   switch (type) {
-    case MovieTypes.start:
+    case MovieTypes.startInfo:
       return {...state, isLoading: true}
 
-    case MovieTypes.success:
+    case MovieTypes.setId: {
+      return {...initialState, id: payload}
+    }
+
+    case MovieTypes.successInfo:
       return {
         ...state,
-        error: '',
-        list: payload,
+        ...payload,
         isLoading: false,
         isLoaded: true
       }
 
-    case MovieTypes.failure:
+    case MovieTypes.failureInfo:
       return {
         ...state,
         error: payload,
