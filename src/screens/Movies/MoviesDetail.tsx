@@ -34,7 +34,7 @@ const MoviesDetail: FC<NavigationComponentProps> = ({componentId}) => {
   }, [dispatch, film.id])
 
   return (
-    <AppLayout>
+    <AppLayout backgroundColor="#1d1d1d" barStyle="light-content">
       <MovieS.MoviesContainer>
         <TouchableOpacity style={MovieS.S.zIndex9} onPress={handleGoBack}>
           <MovieS.Back>

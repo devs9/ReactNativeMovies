@@ -1,11 +1,15 @@
 import React, {FC} from 'react'
-import {SafeAreaView, StatusBar} from 'react-native'
+import {SafeAreaView, StatusBar, StatusBarStyle} from 'react-native'
 
-const AppLayout: FC = ({children}) => {
+const AppLayout: FC<{backgroundColor?: string; barStyle?: StatusBarStyle}> = ({
+  children,
+  backgroundColor,
+  barStyle = 'dark-content'
+}) => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>{children}</SafeAreaView>
+      <StatusBar barStyle={barStyle} />
+      <SafeAreaView style={{backgroundColor}}>{children}</SafeAreaView>
     </>
   )
 }
