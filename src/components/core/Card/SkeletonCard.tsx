@@ -1,120 +1,37 @@
-import React, {FC, useState} from 'react'
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
-import {Image, Text, TouchableOpacity, View, StyleSheet} from 'react-native'
+import React, {FC, memo, useState, useEffect} from 'react'
 import FastImage from 'react-native-fast-image'
+import {Image} from 'react-native'
 
-import {_h, _w} from '../../../constants'
-// import {moviesUrls} from '../../../api'
+import Skeleton from '../Skeleton'
+import * as SkeletonS from './styles'
+import {moviesUrls} from '../../../api'
+import {ISkeletonCard} from './ts'
 
-interface ISkeletonCard {
-  id: number
-  img: string
-  title: string
-  goToDetails: any
-  releaseDate: string
-  isTitleCard?: boolean
-}
-// export const prefetchImage = (url: string) => Image.prefetch(url)
-
-const skeletonStyleProps = {
-  height: 225,
-  marginBottom: 10,
-  borderRadius: 20,
-  width: _w / 2 - 40
-}
-const style = StyleSheet.create({
-  container: {
-    position: 'relative'
-  },
-  titleImg: {
-    width: _w,
-    height: _h / 3
-  },
-  image: {
-    height: 225,
-    marginBottom: 10,
-    borderRadius: 20,
-    width: _w / 2 - 40
-  },
-  imageHide: {
-    height: 225,
-    marginBottom: 10,
-    borderRadius: 20,
-    width: _w / 2 - 40,
-    backfaceVisibility: 'hidden'
-  },
-  title: {
-    bottom: 10,
-    opacity: 0.85,
-    width: '100%',
-    position: 'absolute',
-    backgroundColor: '#fff',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20
-  },
-  text: {
-    paddingTop: 10,
-    fontWeight: 'bold',
-    paddingHorizontal: 20
-  },
-  date: {
-    fontSize: 12,
-    paddingBottom: 10,
-    paddingHorizontal: 20
-  }
-})
-
-const SkeletonCard: FC<ISkeletonCard> = ({
-  // id,
-  // isTitleCard,
-  title,
-  releaseDate,
-  img,
-  goToDetails
-}) => {
+const SkeletonCard: FC<ISkeletonCard> = ({goToDetails, title, img, releaseDate}) => {
+  const [urlImg] = useState(`${moviesUrls.img()}/${img}`) // w500
   const [isLoadImg, setIsLoadImg] = useState(false)
-  const [urlImg, setUrlImg] = useState('')
 
-  const setLoad = () => setIsLoadImg(true)
+  const goToMovieDetail = () => isLoadImg && goToDetails()
 
-  const renderImage = (
+  const renderItem = (
     <>
-      <FastImage onLoad={setLoad} style={style.image} source={{uri: urlImg}} />
-      <View style={style.title}>
-        <Text style={isLoadImg && style.text}>{isLoadImg && title}</Text>
-        <Text style={isLoadImg && style.date}>{isLoadImg && releaseDate}</Text>
-      </View>
+      <FastImage resizeMode="cover" style={SkeletonS.S.image} source={{uri: urlImg}} />
+      <SkeletonS.SkeletonCardTitle>
+        <SkeletonS.SkeletonCardText>{isLoadImg && title}</SkeletonS.SkeletonCardText>
+        <SkeletonS.SkeletonCardDate>{isLoadImg && releaseDate}</SkeletonS.SkeletonCardDate>
+      </SkeletonS.SkeletonCardTitle>
     </>
   )
 
-  const renderSkeleton = (
-    <SkeletonPlaceholder>
-      <SkeletonPlaceholder.Item {...skeletonStyleProps} />
-    </SkeletonPlaceholder>
-  )
-
-  const getImg = async () => {
-    const apiCallImg = await fetch(`https://image.tmdb.org/t/p/original/${img}`)
-    // const apiW = await prefetchImage(apiCallImg.url)
-    // console.log(apiW)
-    setUrlImg(apiCallImg.url)
-  }
-
-  const goToMovieDetail = () => {
-    if (urlImg) {
-      goToDetails()
-    }
-  }
-
-  React.useEffect(() => {
-    getImg()
-  }, [])
+  useEffect(() => {
+    Image.prefetch(urlImg).then(() => setIsLoadImg(true))
+  }, [urlImg])
 
   return (
-    <TouchableOpacity onPress={goToMovieDetail} style={style.container}>
-      {!urlImg ? renderSkeleton : renderImage}
-    </TouchableOpacity>
+    <SkeletonS.SkeletonCardContainer onPress={goToMovieDetail}>
+      {!isLoadImg ? <Skeleton /> : renderItem}
+    </SkeletonS.SkeletonCardContainer>
   )
 }
 
-export default SkeletonCard
+export default memo(SkeletonCard)

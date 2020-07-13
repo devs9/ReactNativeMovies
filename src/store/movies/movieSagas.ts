@@ -1,13 +1,13 @@
 import {put, takeEvery} from 'redux-saga/effects'
 import queryString from 'query-string'
 
-import {MovieTypes} from './actionTypes'
+import * as Actions from './movieActions'
+import {MovieTypes as Types} from './actionTypes'
 import {fetchRequest, moviesUrls, moviesOptions} from '../../api'
-import {movieStart, movieSuccess, movieFailure} from './movieActions'
 
 function* getMovies() {
   try {
-    yield put(movieStart())
+    yield put(Actions.movieStart())
     const apiCall = yield fetchRequest(`${moviesUrls.root}?${queryString.stringify(moviesOptions)}`)
     const dataResponse = apiCall?.results
     const data = dataResponse.map((movie: any) => {
@@ -19,12 +19,35 @@ function* getMovies() {
       }
     })
 
-    yield put(movieSuccess(data))
+    yield put(Actions.movieSuccess(data))
   } catch (e) {
-    yield put(movieFailure('SAGA_ERROR__$getMovies'))
+    yield put(Actions.movieFailure('SAGA_ERROR__getMovies'))
+  }
+}
+
+function* getMovieInfo() {
+  try {
+    yield put(Actions.movieInfoStart())
+
+    // const apiCall =
+    // yield fetchRequest(`${moviesUrls.root}?${queryString.stringify(moviesOptions)}`)
+    // const dataResponse = apiCall?.results
+    // const data = dataResponse.map((movie: any) => {
+    //   return {
+    //     id: movie.id,
+    //     title: movie.title,
+    //     img: movie.backdrop_path,
+    //     releaseDate: movie.release_date.substring(0, 4)
+    //   }
+    // })
+
+    // yield put(Actions.movieSuccess(data))
+  } catch (e) {
+    yield put(Actions.movieInfoFailure('SAGA_ERROR__getMovieInfo'))
   }
 }
 
 export function* watcherMovies() {
-  yield takeEvery(MovieTypes.saga, getMovies)
+  yield takeEvery(Types.saga, getMovies)
+  yield takeEvery(Types.sagaInfo, getMovieInfo)
 }
