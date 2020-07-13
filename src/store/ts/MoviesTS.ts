@@ -7,6 +7,7 @@ export interface Movie {
 
 export interface MoviesSate {
   error: string
+  isLoaded: boolean
   isLoading: boolean
   list: Movie[]
 }

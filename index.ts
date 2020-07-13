@@ -1,7 +1,9 @@
 import {Navigation} from 'react-native-navigation'
 
-import RootScreen from './src/screens/RootScreen'
-import {rootNavigatorOpt, navigatorStyleOpt} from './src/screens/config'
+if (__DEV__) {
+  import('./src/config/reactotron/reactotron')
+}
+import RootScreen, {rootNavigatorOpt, navigatorStyleOpt} from './src/screens'
 
 RootScreen()
 Navigation.setDefaultOptions(navigatorStyleOpt)

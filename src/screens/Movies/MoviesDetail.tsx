@@ -1,25 +1,21 @@
 import React from 'react'
-import {Text, View, ScrollView} from 'react-native'
+import {Text, View} from 'react-native'
 
-const MoviesDetail = (props: any) => {
-  console.log('MoviesDetail', {props})
+import {moviesStyleOpt} from '../config'
+import {AppLayout} from '../../app'
 
+const MoviesDetail = () => {
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic">
+    <AppLayout>
       <View>
         <Text>MoviesDetail</Text>
       </View>
-    </ScrollView>
+    </AppLayout>
   )
 }
 
 MoviesDetail.options = {
-  componentId: 'Settings 33',
-  topBar: {
-    title: {
-      text: 'Settings 111'
-    }
-  }
+  ...moviesStyleOpt
 }
 
 export default MoviesDetail

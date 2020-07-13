@@ -15,3 +15,9 @@ export const navigatorStyleOpt = {
     }
   }
 }
+
+export const moviesStyleOpt = {
+  topBar: {
+    visible: false
+  }
+}

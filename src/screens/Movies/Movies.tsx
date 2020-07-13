@@ -1,108 +1,44 @@
 import React, {FC, useEffect} from 'react'
-import {Navigation, NavigationComponentProps} from 'react-native-navigation'
-import {View, Text, FlatList, StyleSheet} from 'react-native'
+import {Text, FlatList} from 'react-native'
 import {useSelector, useDispatch} from 'react-redux'
+import {NavigationComponentProps} from 'react-native-navigation'
+
+import {moviesStyleOpt} from '../config'
+import {goToMoviesDetails} from '../Navigator'
+import {getMovieSaga, AppStore, Movie} from '../../store'
 
 import {AppLayout} from '../../app'
 import {SkeletonCard} from '../../components'
-
-import {getMovieSaga} from '../../store/movies/movieActions'
-import {AppStore, Movie} from '../../store/ts'
-// import {_w, _h} from '../../constants'
-
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 30,
-    flexDirection: 'column'
-  },
-  title: {
-    fontSize: 22,
-    marginTop: 25,
-    marginLeft: 30,
-    marginBottom: 25,
-    fontWeight: 'bold'
-  },
-  card: {
-    height: 200
-  },
-  row: {
-    flex: 1,
-    // marginTop: 25,
-    marginBottom: 10,
-    paddingHorizontal: 30,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  }
-})
+import {S} from './styles'
 
 const Movies: FC<NavigationComponentProps> = (props) => {
   const dispatch = useDispatch()
   const movies = useSelector((state: AppStore) => state.movies)
 
-  // const goTo = () => {
-  //   Navigation.push(props.componentId, {
-  //     component: {
-  //       name: 'MoviesDetail'
-  //     }
-  //   })
-  // }
-
-  const goToDetails = (id: number) => () => {
-    Navigation.push(props.componentId, {
-      component: {name: 'MoviesDetail', passProps: id}
-    })
-  }
+  const renderItem = ({item}: {item: Movie}) => (
+    <SkeletonCard {...item} goToDetails={goToMoviesDetails(item.id, props.componentId)} />
+  )
 
   useEffect(() => {
-    dispatch(getMovieSaga())
-  }, [dispatch])
-
-  const renderItem = ({item}: {item: Movie}) => {
-    return (
-      <SkeletonCard
-        id={item.id}
-        img={item.img}
-        title={item.title}
-        releaseDate={item.releaseDate}
-        goToDetails={goToDetails(item.id)}
-      />
-    )
-  }
-
-  console.log('Movies', {props, movies})
+    !movies.isLoaded && dispatch(getMovieSaga())
+  }, [dispatch, movies.isLoaded])
 
   return (
     <AppLayout>
       <FlatList
         numColumns={2}
         data={movies.list}
-        initialNumToRender={6}
         renderItem={renderItem}
-        columnWrapperStyle={style.row}
-        ListHeaderComponent={<Text style={style.title}>MOVIES</Text>}
+        columnWrapperStyle={S.columnWrapper}
         keyExtractor={(item) => String(item.id)}
+        ListHeaderComponent={<Text style={S.title}>MOVIES</Text>}
       />
     </AppLayout>
   )
 }
 
 Movies.options = {
-  topBar: {
-    visible: false
-  }
+  ...moviesStyleOpt
 }
 
 export default Movies
-
-//         {movies.list.map((movie) => (
-//             <SkeletonCard
-//               id={movie.id}
-//               key={movie.id}
-//               img={movie.img}
-//               title={movie.title}
-//               releaseDate={movie.releaseDate}
-//               goToDetails={goToDetails(movie.id)}
-//             />
-//           ))}

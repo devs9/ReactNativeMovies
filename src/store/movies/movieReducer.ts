@@ -5,6 +5,7 @@ import {MoviesSate} from '../ts'
 const initialState: MoviesSate = {
   list: [],
   error: '',
+  isLoaded: false,
   isLoading: false
 }
 
@@ -18,14 +19,16 @@ const moviesReducer: Reducer<MoviesSate> = (state = initialState, {type, payload
         ...state,
         error: '',
         list: payload,
-        isLoading: false
+        isLoading: false,
+        isLoaded: true
       }
 
     case MovieTypes.failure:
       return {
         ...state,
         error: payload,
-        isLoading: false
+        isLoading: false,
+        isLoaded: false
       }
 
     default:
