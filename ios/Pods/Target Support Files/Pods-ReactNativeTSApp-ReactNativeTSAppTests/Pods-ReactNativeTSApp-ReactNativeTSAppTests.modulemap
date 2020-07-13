@@ -1,0 +1,6 @@
+module Pods_ReactNativeTSApp_ReactNativeTSAppTests {
+  umbrella header "Pods-ReactNativeTSApp-ReactNativeTSAppTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
